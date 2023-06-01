@@ -7,7 +7,7 @@ module.exports.create_report= async function(req,res){
 
   console.log("Inside report controller");
 
-  const doctor =req.doctor._id;
+  const doctor = req.doctor._id;
   console.log("Dr:"+ doctor);
 
  try{

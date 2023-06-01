@@ -10,7 +10,6 @@ let opts = {
     secretOrKey: "secrethospitalkey"
 }
 
-
 passport.use(new JWTStrategy(opts, function(jwtPayLoad, done){
 
     Doctor.findById(jwtPayLoad._id, function(err, user){

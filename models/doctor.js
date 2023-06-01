@@ -43,4 +43,4 @@ doctorSchema.methods.matchPassword = async function(enteredPassword) {
 };
 const Doctor = mongoose.model('Doctor', doctorSchema);
 
-module.exports =Doctor;
+module.exports = Doctor;

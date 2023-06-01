@@ -1,45 +1,60 @@
-const Patient = require('../../../models/patient');
-const Report = require('../../../models/report');
+const Patient = require("../../../models/patient");
+const Report = require("../../../models/report");
 
-exports.register= async (req, res) => {
+exports.register = async (req, res) => {
+  const doctor = req.doctor._id; // get the doctor id
 
-  const doctor =req.doctor._id;      // get the doctor id
+  try {
+    const { name, phone } = req.body; //destructure the name and phone from body
+    let patient;
+    patient = await Patient.find({
+      phone,
+    });
 
- 
-    try {
-      const { name, phone } = req.body; //destructure the name and phone from body
-      let patient;
-      patient = await Patient.find({
-        phone
-      });
-      
-      //if there is patient success if not then create
-      if (patient.length > 0) {
-        return res.status(200).json({
-          success: true,
-          body: patient[0]
-        });
-      }
-
-      
-      patient = await Patient.create({
-        name,
-        phone,
-        doctor
-      });
-      // Return response
-      return res.status(201).json({
+    //if there is patient success if not then create
+    if (patient.length > 0) {
+      return res.status(200).json({
         success: true,
-        body: patient,
-        msg:'Patient Registered Sucessfully!'
-      });
-    } catch (err) {
-      // Error handling
-      return res.status(401).json({
-        success: false,
-        msg:'Error Occoured!'
+        body: patient[0],
       });
     }
-  };
 
-  
+    patient = await Patient.create({
+      name,
+      phone,
+      doctor,
+    });
+    // Return response
+    return res.status(201).json({
+      success: true,
+      body: patient,
+      msg: "Patient Registered Sucessfully!",
+    });
+  } catch (err) {
+    // Error handling
+    return res.status(401).json({
+      success: false,
+      msg: "Error Occoured!",
+    });
+  }
+};
+
+// module.exports.create = async (req, res) => {
+//   try {
+//     let data = await Patient.findOne({ phone: req.body.phone });
+
+//     if (data) {
+//       return res.status(200).json({
+//         message: "Patient Registered Sucessfully!",
+//         data: data,
+//       });
+//     }
+
+//     data = await Patient.create(req.body);
+
+//     return res.status(201).json({
+//       message: "data created",
+//       data: data,
+//     });
+//   } catch (error) {}
+// };
